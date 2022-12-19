@@ -45,16 +45,16 @@ fn main() {
         // δ
         vec![
             δEl::new(
-                DeltaFunctionTest::new(Q::Do, Some(Σ::One)),
-                DeltaFunctionAction::new(Some(Σ::Zero), HeadMovementDirection::Left, Q::Do, false),
+                δFnTest::new(Q::Do, Some(Σ::One)),
+                δFnAction::new(Some(Σ::Zero), HeadMovementDirection::Left, Q::Do, false),
             ),
             δEl::new(
-                DeltaFunctionTest::new(Q::Do, Some(Σ::Zero)),
-                DeltaFunctionAction::new(Some(Σ::One), HeadMovementDirection::Left, Q::Stop, true),
+                δFnTest::new(Q::Do, Some(Σ::Zero)),
+                δFnAction::new(Some(Σ::One), HeadMovementDirection::Left, Q::Stop, true),
             ),
             δEl::new(
-                DeltaFunctionTest::new(Q::Do, None),
-                DeltaFunctionAction::new(Some(Σ::Zero), HeadMovementDirection::Left, Q::Stop, true),
+                δFnTest::new(Q::Do, None),
+                δFnAction::new(Some(Σ::Zero), HeadMovementDirection::Left, Q::Stop, true),
             ),
         ],
 

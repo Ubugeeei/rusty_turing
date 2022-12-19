@@ -24,50 +24,48 @@ type δ<Q, Σ> = Vec<δEl<Q, Σ>>;
 
 #[allow(non_camel_case_types)]
 pub struct δEl<Q: Eq + PartialEq + Clone, Σ: Eq + PartialEq + Clone + std::fmt::Display> {
-    test: DeltaFunctionTest<Q, Σ>,
-    action: DeltaFunctionAction<Q, Σ>,
+    test: δFnTest<Q, Σ>,
+    action: δFnAction<Q, Σ>,
 }
 impl<Q: Eq + PartialEq + Clone, Σ: Eq + PartialEq + Clone + std::fmt::Display> δEl<Q, Σ> {
-    pub fn new(test: DeltaFunctionTest<Q, Σ>, action: DeltaFunctionAction<Q, Σ>) -> δEl<Q, Σ> {
+    pub fn new(test: δFnTest<Q, Σ>, action: δFnAction<Q, Σ>) -> δEl<Q, Σ> {
         δEl { test, action }
     }
 }
 
-pub struct DeltaFunctionTest<
-    Q: Eq + PartialEq + Clone,
-    Σ: Eq + PartialEq + Clone + std::fmt::Display,
-> {
+#[allow(non_camel_case_types)]
+pub struct δFnTest
+<Q: Eq + PartialEq + Clone, Σ: Eq + PartialEq + Clone + std::fmt::Display> {
     q: Q,
     read: Option<Σ>,
 }
 impl<Q: Eq + PartialEq + Clone, Σ: Eq + PartialEq + Clone + std::fmt::Display>
-    DeltaFunctionTest<Q, Σ>
+    δFnTest<Q, Σ>
 {
-    pub fn new(q: Q, read: Option<Σ>) -> DeltaFunctionTest<Q, Σ> {
-        DeltaFunctionTest { q, read }
+    pub fn new(q: Q, read: Option<Σ>) -> δFnTest<Q, Σ> {
+        δFnTest { q, read }
     }
 }
 
+#[allow(non_camel_case_types)]
 #[derive(Clone)]
-pub struct DeltaFunctionAction<
-    Q: Eq + PartialEq + Clone,
-    Σ: Eq + PartialEq + Clone + std::fmt::Display,
-> {
+pub struct δFnAction<Q: Eq + PartialEq + Clone, Σ: Eq + PartialEq + Clone + std::fmt::Display>
+{
     write_to: Option<Σ>,
     direction: HeadMovementDirection,
     q: Q,
     acceptance: bool,
 }
 impl<Q: Eq + PartialEq + Clone, Σ: Eq + PartialEq + Clone + std::fmt::Display>
-    DeltaFunctionAction<Q, Σ>
+    δFnAction<Q, Σ>
 {
     pub fn new(
         write_to: Option<Σ>,
         direction: HeadMovementDirection,
         q: Q,
         acceptance: bool,
-    ) -> DeltaFunctionAction<Q, Σ> {
-        DeltaFunctionAction {
+    ) -> δFnAction<Q, Σ> {
+        δFnAction {
             write_to,
             direction,
             q,
