@@ -10,7 +10,7 @@
 //!
 //!  δ: transition function set (δ: Q × Σ → Q × Σ × {L, R, S})
 
-type Tape<Σ> = Vec<Option<Σ>>;
+type Tape<Σ> = Vec<Σ>;
 
 #[derive(Eq, PartialEq, Clone)]
 pub enum HeadMovementDirection {
@@ -34,33 +34,27 @@ impl<Q: Eq + PartialEq + Clone, Σ: Eq + PartialEq + Clone + std::fmt::Display> 
 }
 
 #[allow(non_camel_case_types)]
-pub struct δFnTest
-<Q: Eq + PartialEq + Clone, Σ: Eq + PartialEq + Clone + std::fmt::Display> {
+pub struct δFnTest<Q: Eq + PartialEq + Clone, Σ: Eq + PartialEq + Clone + std::fmt::Display> {
     q: Q,
-    read: Option<Σ>,
+    read: Σ,
 }
-impl<Q: Eq + PartialEq + Clone, Σ: Eq + PartialEq + Clone + std::fmt::Display>
-    δFnTest<Q, Σ>
-{
-    pub fn new(q: Q, read: Option<Σ>) -> δFnTest<Q, Σ> {
+impl<Q: Eq + PartialEq + Clone, Σ: Eq + PartialEq + Clone + std::fmt::Display> δFnTest<Q, Σ> {
+    pub fn new(q: Q, read: Σ) -> δFnTest<Q, Σ> {
         δFnTest { q, read }
     }
 }
 
 #[allow(non_camel_case_types)]
 #[derive(Clone)]
-pub struct δFnAction<Q: Eq + PartialEq + Clone, Σ: Eq + PartialEq + Clone + std::fmt::Display>
-{
-    write_to: Option<Σ>,
+pub struct δFnAction<Q: Eq + PartialEq + Clone, Σ: Eq + PartialEq + Clone + std::fmt::Display> {
+    write_to: Σ,
     direction: HeadMovementDirection,
     q: Q,
     acceptance: bool,
 }
-impl<Q: Eq + PartialEq + Clone, Σ: Eq + PartialEq + Clone + std::fmt::Display>
-    δFnAction<Q, Σ>
-{
+impl<Q: Eq + PartialEq + Clone, Σ: Eq + PartialEq + Clone + std::fmt::Display> δFnAction<Q, Σ> {
     pub fn new(
-        write_to: Option<Σ>,
+        write_to: Σ,
         direction: HeadMovementDirection,
         q: Q,
         acceptance: bool,
@@ -118,16 +112,11 @@ impl<Q: Eq + PartialEq + Clone, Σ: Eq + PartialEq + Clone + std::fmt::Display> 
             self.tape[self.head_position] = action.write_to;
             match action.direction {
                 HeadMovementDirection::Left => {
-                    if self.head_position == 0 {
-                        self.tape.insert(0, None);
-                    } else {
+                    if self.head_position != 0 {
                         self.head_position -= 1;
                     }
                 }
                 HeadMovementDirection::Right => {
-                    if self.head_position == self.tape.len() - 1 {
-                        self.tape.push(None);
-                    }
                     self.head_position += 1;
                 }
                 HeadMovementDirection::Stay => {}
@@ -140,10 +129,7 @@ impl<Q: Eq + PartialEq + Clone, Σ: Eq + PartialEq + Clone + std::fmt::Display> 
     }
 
     pub fn print(&self) {
-        self.tape.iter().for_each(|x| match x {
-            Some(x) => print!("{}", x),
-            None => print!(" "),
-        });
+        self.tape.iter().for_each(|x| print!("{}", x));
         println!()
     }
 }

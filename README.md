@@ -19,12 +19,14 @@ use rusty_turing::*;
 enum Σ {
     Zero,
     One,
+    Blank,
 }
 impl std::fmt::Display for Σ {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         match self {
             Σ::Zero => write!(f, "0"),
             Σ::One => write!(f, "1"),
+            Σ::Blank => write!(f, " "),
         }
     }
 }
@@ -42,37 +44,60 @@ fn main() {
      *
      */
     let mut m = TuringMachine::new(
-        // δ
         vec![
             δEl::new(
-                δFnTest::new(Q::Do, Some(Σ::One)),
-                δFnAction::new(Some(Σ::Zero), HeadMovementDirection::Left, Q::Do, false),
+                δFnTest::new(Q::Do, Σ::One),
+                δFnAction::new(Σ::Zero, HeadMovementDirection::Left, Q::Do, false),
             ),
             δEl::new(
-                δFnTest::new(Q::Do, Some(Σ::Zero)),
-                δFnAction::new(Some(Σ::One), HeadMovementDirection::Left, Q::Stop, true),
+                δFnTest::new(Q::Do, Σ::Zero),
+                δFnAction::new(Σ::One, HeadMovementDirection::Left, Q::Stop, true),
             ),
             δEl::new(
-                δFnTest::new(Q::Do, None),
-                δFnAction::new(Some(Σ::Zero), HeadMovementDirection::Left, Q::Stop, true),
+                δFnTest::new(Q::Do, Σ::Blank),
+                δFnAction::new(Σ::Zero, HeadMovementDirection::Left, Q::Stop, true),
             ),
         ],
-
-        // q0
         Q::Do,
-
-        // tape
-        vec![Some(Σ::Zero), Some(Σ::One), Some(Σ::One), Some(Σ::One)],
-
-        // initial head position
+        vec![Σ::Zero, Σ::One, Σ::One, Σ::One],
         3,
     );
-
     m.start();
-
     m.print(); // 1000
-}
 
+    /*
+     *
+     * calc 1000000000001111 + 1
+     *
+     */
+    m.set(
+        Q::Do,
+        vec![
+            Σ::One,
+            Σ::Zero,
+            Σ::Zero,
+            Σ::Zero,
+            //
+            Σ::Zero,
+            Σ::Zero,
+            Σ::Zero,
+            Σ::Zero,
+            //
+            Σ::Zero,
+            Σ::Zero,
+            Σ::Zero,
+            Σ::Zero,
+            //
+            Σ::One,
+            Σ::One,
+            Σ::One,
+            Σ::One,
+        ],
+        15,
+    );
+    m.start();
+    m.print(); // 1000000000010000
+}
 ```
 
 ## Examples
